@@ -34,7 +34,7 @@ import axios from 'axios'
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -75,7 +75,7 @@ function cardMaker(obj){
   usersUsername.classList.add('username')
 
   imgURL.src = `${obj.avatar_url}`
-  userName.textContent = `${obj.name}`
+  userName.innerHTML = `${obj.name}`
   usersUsername.textContent = `${obj.login}`
   userLocation.textContent = `Location: ${obj.location}`
   userProfile.textContent = `Profile: `
@@ -111,9 +111,41 @@ axios.get('https://api.github.com/users/BradfordMez')
   .catch(err=>console.log(err.message))
   .finally(()=> console.log('done'))
 
+  
 
 
+  const followersArray = [ ]
 
+  axios.get(`https://api.github.com/users/justsml/followers`)
+    .then(response =>{
+      response.data.forEach(obj => {
+        followersArray.push(obj.login)
+      })
+      return followersArray;
+      })
+
+      .then(names =>{
+        names.forEach(name=>{
+          axios.get(`https://api.github.com/users/${name}`)
+          .then(response=>{
+            cards.appendChild(cardMaker(response.data))
+          })
+          .catch(err=>{
+            console.log(err.message)
+          })
+          .finally(()=>{
+            console.log('done')
+          })
+        })
+      })
+      .catch(err=>{
+        console.log(err.message)
+      })
+      .finally(()=>{
+        console.log('done')
+      })
+
+  
 /*
   List of LS Instructors Github username's:
     tetondan
@@ -125,38 +157,3 @@ axios.get('https://api.github.com/users/BradfordMez')
 
 
 
-
-// {
-//   "login": "BradfordMez",
-//   "id": 84813031,
-//   "node_id": "MDQ6VXNlcjg0ODEzMDMx",
-//   "avatar_url": "https://avatars.githubusercontent.com/u/84813031?v=4",
-//   "gravatar_id": "",
-//   "url": "https://api.github.com/users/BradfordMez",
-//   "html_url": "https://github.com/BradfordMez",
-//   "followers_url": "https://api.github.com/users/BradfordMez/followers",
-//   "following_url": "https://api.github.com/users/BradfordMez/following{/other_user}",
-//   "gists_url": "https://api.github.com/users/BradfordMez/gists{/gist_id}",
-//   "starred_url": "https://api.github.com/users/BradfordMez/starred{/owner}{/repo}",
-//   "subscriptions_url": "https://api.github.com/users/BradfordMez/subscriptions",
-//   "organizations_url": "https://api.github.com/users/BradfordMez/orgs",
-//   "repos_url": "https://api.github.com/users/BradfordMez/repos",
-//   "events_url": "https://api.github.com/users/BradfordMez/events{/privacy}",
-//   "received_events_url": "https://api.github.com/users/BradfordMez/received_events",
-//   "type": "User",
-//   "site_admin": false,
-//   "name": null,
-//   "company": null,
-//   "blog": "",
-//   "location": null,
-//   "email": null,
-//   "hireable": null,
-//   "bio": null,
-//   "twitter_username": null,
-//   "public_repos": 24,
-//   "public_gists": 0,
-//   "followers": 0,
-//   "following": 0,
-//   "created_at": "2021-05-25T20:30:47Z",
-//   "updated_at": "2021-06-18T17:26:45Z"
-// }
