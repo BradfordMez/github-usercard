@@ -1,4 +1,6 @@
-const { default: axios } = require("axios");
+//  const { default: axios } = require("axios");
+
+import axios from 'axios'
 
 /*
   STEP 1: using axios, send a GET request to the following URL
@@ -31,7 +33,7 @@ const { default: axios } = require("axios");
     Using that array, iterate over it, requesting data for each user, creating a new card for each
     user, and adding that card to the DOM.
 */
-const cards = document.querySelector('.cards')
+
 const followersArray = [];
 
 /*
@@ -53,7 +55,8 @@ const followersArray = [];
       </div>
     </div>
 */
-function cardMaker({obj}){
+
+function cardMaker(obj){
   const card = document.createElement('div')
   const imgURL = document.createElement('img')
   const cardInfo = document.createElement('div')
@@ -72,14 +75,15 @@ function cardMaker({obj}){
   usersUsername.classList.add('username')
 
   imgURL.src = `${obj.avatar_url}`
-  userName.textContent = obj["name"]
+  userName.textContent = `${obj.name}`
   usersUsername.textContent = `${obj.login}`
   userLocation.textContent = `Location: ${obj.location}`
   userProfile.textContent = `Profile: `
-  userProfileLink.textContent = `${obj.html_url}`
+  userProfileLink.href = obj.html_url
+  userProfileLink.innerHTML = 'Github'
   userFollowers.textContent = `Followers: ${obj.followers}`
   userFollowing.textContent = `Following: ${obj.following}`
-  userBio.textContent = `${obj.bio}`
+  userBio.textContent = `Bio: ${obj.bio}`
 
   card.appendChild(imgURL)
   card.appendChild(cardInfo)
@@ -95,9 +99,10 @@ function cardMaker({obj}){
   return card
 }
 
+const cards = document.querySelector('.cards')
 axios.get('https://api.github.com/users/BradfordMez')
-  .then(obj =>{
-    const card = cardMaker(obj.data)
+  .then(response =>{
+    const card = cardMaker(response.data)
     return card
   })
   .then(card=>{
