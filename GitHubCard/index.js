@@ -1,8 +1,14 @@
+//  const { default: axios } = require("axios");
+
+import axios from 'axios'
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+
+
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +34,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -36,7 +42,7 @@ const followersArray = [];
 
     <div class="card">
       <img src={image url of user} />
-      <div class="card-info">
+      <div +class="card-info">
         <h3 class="name">{users name}</h3>
         <p class="username">{users user name}</p>
         <p>Location: {users location}</p>
@@ -50,6 +56,96 @@ const followersArray = [];
     </div>
 */
 
+function cardMaker(obj){
+  const card = document.createElement('div')
+  const imgURL = document.createElement('img')
+  const cardInfo = document.createElement('div')
+  const userName = document.createElement('h3')
+  const usersUsername = document.createElement('p')
+  const userLocation = document.createElement('p')
+  const userProfile = document.createElement('p')
+  const userProfileLink = document.createElement('a')
+  const userFollowers = document.createElement('p')
+  const userFollowing = document.createElement('p')
+  const userBio = document.createElement('p')
+ 
+  card.classList.add('card')
+  cardInfo.classList.add('card-info')
+  userName.classList.add('name')
+  usersUsername.classList.add('username')
+
+  imgURL.src = `${obj.avatar_url}`
+  userName.innerHTML = `${obj.name}`
+  usersUsername.textContent = `${obj.login}`
+  userLocation.textContent = `Location: ${obj.location}`
+  userProfile.textContent = `Profile: `
+  userProfileLink.href = obj.html_url
+  userProfileLink.innerHTML = 'Github'
+  userFollowers.textContent = `Followers: ${obj.followers}`
+  userFollowing.textContent = `Following: ${obj.following}`
+  userBio.textContent = `Bio: ${obj.bio}`
+
+  card.appendChild(imgURL)
+  card.appendChild(cardInfo)
+  cardInfo.appendChild(userName)
+  cardInfo.appendChild(usersUsername)
+  cardInfo.appendChild(userLocation)
+  cardInfo.appendChild(userProfile)
+  userProfile.appendChild(userProfileLink)
+  cardInfo.appendChild(userFollowers)
+  cardInfo.appendChild(userFollowing)
+  cardInfo.appendChild(userBio)
+
+  return card
+}
+
+const cards = document.querySelector('.cards')
+axios.get('https://api.github.com/users/BradfordMez')
+  .then(response =>{
+    const card = cardMaker(response.data)
+    return card
+  })
+  .then(card=>{
+    cards.appendChild(card)
+  })
+  .catch(err=>console.log(err.message))
+  .finally(()=> console.log('done'))
+
+  
+
+
+  const followersArray = [ ]
+
+  axios.get(`https://api.github.com/users/justsml/followers`)
+    .then(response =>{
+      response.data.forEach(obj => {
+        followersArray.push(obj.login)
+      })
+      return followersArray;
+      })
+
+      .then(names =>{
+        names.forEach(name=>{
+          axios.get(`https://api.github.com/users/${name}`)
+          .then(response=>{
+            cards.appendChild(cardMaker(response.data))
+          })
+          .catch(err=>{
+            console.log(err.message)
+          })
+          .finally(()=>{
+            console.log('done')
+          })
+        })
+      })
+      .catch(err=>{
+        console.log(err.message)
+      })
+      .finally(()=>{
+        console.log('done')
+      })
+
+  
 /*
   List of LS Instructors Github username's:
     tetondan
@@ -58,3 +154,6 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+
+
