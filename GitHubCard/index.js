@@ -5,7 +5,9 @@ const { default: axios } = require("axios");
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-axios.get('https://api.github.com/users/BradfordMez')
+
+
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -51,7 +53,7 @@ const followersArray = [];
       </div>
     </div>
 */
-function cardMaker({}){
+function cardMaker({obj}){
   const card = document.createElement('div')
   const imgURL = document.createElement('img')
   const cardInfo = document.createElement('div')
@@ -69,15 +71,15 @@ function cardMaker({}){
   userName.classList.add('name')
   usersUsername.classList.add('username')
 
-  imgURL.textContent = avatar_url
-  userName.textContent = name
-  usersUsername.textContent = login
-  userLocation.textContent = `Location: ${location}`
+  imgURL.src = `${obj.avatar_url}`
+  userName.textContent = obj["name"]
+  usersUsername.textContent = `${obj.login}`
+  userLocation.textContent = `Location: ${obj.location}`
   userProfile.textContent = `Profile: `
-  userProfileLink.textContent = html_url
-  userFollowers.textContent = `Followers: ${followers}`
-  userFollowing.textContent = `Following: ${following}`
-  userBio.textContent = bio
+  userProfileLink.textContent = `${obj.html_url}`
+  userFollowers.textContent = `Followers: ${obj.followers}`
+  userFollowing.textContent = `Following: ${obj.following}`
+  userBio.textContent = `${obj.bio}`
 
   card.appendChild(imgURL)
   card.appendChild(cardInfo)
@@ -93,6 +95,16 @@ function cardMaker({}){
   return card
 }
 
+axios.get('https://api.github.com/users/BradfordMez')
+  .then(obj =>{
+    const card = cardMaker(obj.data)
+    return card
+  })
+  .then(card=>{
+    cards.appendChild(card)
+  })
+  .catch(err=>console.log(err.message))
+  .finally(()=> console.log('done'))
 
 
 
