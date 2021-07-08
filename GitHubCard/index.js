@@ -29,7 +29,7 @@ axios.get('https://api.github.com/users/BradfordMez')
     Using that array, iterate over it, requesting data for each user, creating a new card for each
     user, and adding that card to the DOM.
 */
-
+const cards = document.querySelector('.cards')
 const followersArray = [];
 
 /*
@@ -38,7 +38,7 @@ const followersArray = [];
 
     <div class="card">
       <img src={image url of user} />
-      <div class="card-info">
+      <div +class="card-info">
         <h3 class="name">{users name}</h3>
         <p class="username">{users user name}</p>
         <p>Location: {users location}</p>
@@ -69,6 +69,16 @@ function cardMaker({}){
   userName.classList.add('name')
   usersUsername.classList.add('username')
 
+  imgURL.textContent = avatar_url
+  userName.textContent = name
+  usersUsername.textContent = login
+  userLocation.textContent = `Location: ${location}`
+  userProfile.textContent = `Profile: `
+  userProfileLink.textContent = html_url
+  userFollowers.textContent = `Followers: ${followers}`
+  userFollowing.textContent = `Following: ${following}`
+  userBio.textContent = bio
+
   card.appendChild(imgURL)
   card.appendChild(cardInfo)
   cardInfo.appendChild(userName)
@@ -79,7 +89,10 @@ function cardMaker({}){
   cardInfo.appendChild(userFollowers)
   cardInfo.appendChild(userFollowing)
   cardInfo.appendChild(userBio)
+
+  return card
 }
+
 
 
 
@@ -92,3 +105,41 @@ function cardMaker({}){
     luishrd
     bigknell
 */
+
+
+
+
+// {
+//   "login": "BradfordMez",
+//   "id": 84813031,
+//   "node_id": "MDQ6VXNlcjg0ODEzMDMx",
+//   "avatar_url": "https://avatars.githubusercontent.com/u/84813031?v=4",
+//   "gravatar_id": "",
+//   "url": "https://api.github.com/users/BradfordMez",
+//   "html_url": "https://github.com/BradfordMez",
+//   "followers_url": "https://api.github.com/users/BradfordMez/followers",
+//   "following_url": "https://api.github.com/users/BradfordMez/following{/other_user}",
+//   "gists_url": "https://api.github.com/users/BradfordMez/gists{/gist_id}",
+//   "starred_url": "https://api.github.com/users/BradfordMez/starred{/owner}{/repo}",
+//   "subscriptions_url": "https://api.github.com/users/BradfordMez/subscriptions",
+//   "organizations_url": "https://api.github.com/users/BradfordMez/orgs",
+//   "repos_url": "https://api.github.com/users/BradfordMez/repos",
+//   "events_url": "https://api.github.com/users/BradfordMez/events{/privacy}",
+//   "received_events_url": "https://api.github.com/users/BradfordMez/received_events",
+//   "type": "User",
+//   "site_admin": false,
+//   "name": null,
+//   "company": null,
+//   "blog": "",
+//   "location": null,
+//   "email": null,
+//   "hireable": null,
+//   "bio": null,
+//   "twitter_username": null,
+//   "public_repos": 24,
+//   "public_gists": 0,
+//   "followers": 0,
+//   "following": 0,
+//   "created_at": "2021-05-25T20:30:47Z",
+//   "updated_at": "2021-06-18T17:26:45Z"
+// }
